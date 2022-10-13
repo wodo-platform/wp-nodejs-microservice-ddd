@@ -42,14 +42,22 @@ import { GameLoungeOrmEntity } from './game-lounge/infrastructure/database/game-
       password: String(process.env.MYSQLDB_WODO_PASSWORD).toString(),
       database: String(process.env.MYSQLDB_WODO_DATABASE).toString(),
       models: [GameLoungeOrmEntity],
+      pool: {
+        max: parseInt(process.env.MYSQLDB_CONNECTION_POOL_MAX).valueOf(),
+        min: parseInt(process.env.MYSQLDB_CONNECTION_POOL_MIN).valueOf(),
+        acquire: parseInt(
+          process.env.MYSQLDB_CONNECTION_POOL_ACQUIRE,
+        ).valueOf(),
+        idle: parseInt(process.env.MYSQLDB_CONNECTION_POOL_IDLE).valueOf(),
+      },
     }),
     GameLoungeModule,
     RouterModule.register([
       {
         path: 'api',
-        module: GameLoungeModule
+        module: GameLoungeModule,
       },
-    ])
+    ]),
   ],
   controllers: [AppController],
   providers: [AppService],
